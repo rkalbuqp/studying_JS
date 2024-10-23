@@ -15,23 +15,53 @@ let possiblePositionsToWin = [
 ];
 
 function initial() {
-  // Aqui temos como o nosso jogo começará.
-  selected = []; // O padrão como tendo um array vazio para "selected"
+  /** Aqui temos como o nosso jogo começará. */
+  selected = []; /** O padrão como tendo um array vazio para "selected" */
 
-  currentPlayer.innerHTML = `JOGADOR DA VEZ: ${player}`; // Aqui teremos o primeiro movimento como sendo do 'player', que é dado como X.
+  currentPlayer.innerHTML = `JOGADOR DA VEZ: ${player}`; /** Aqui teremos o primeiro movimento como sendo do 'player', que é dado como X. */
 
   document.querySelectorAll(".game button").forEach((item) => {
-    // Selecionaremos todos os botões dentro da classe .game e atribuiremos um 'forEach' - para cada.
-    item.innerHTML = ""; // Aqui teremos o padrão de string vazia para o inicio ainda
-    item.addEventListener("click", newMove); // Aqui temos um listener que vai funcionar para cada click, dado como novo movimento - newMove;
+    /** Selecionaremos todos os botões dentro da classe .game e atribuiremos um 'forEach' - para cada. */
+    item.innerHTML =
+      ""; /** Aqui teremos o padrão de string vazia para o inicio ainda */
+    item.addEventListener(
+      "click",
+      newMove
+    ); /** Aqui temos um listener que vai funcionar para cada click, dado como novo movimento - newMove; */
   });
 }
 
-initial(); // renderizamos o início do jogo, portanto.
+initial(); /** renderizamos o início do jogo, portanto. */
 
 function newMove(event) {
-  // criamos uma função para novo movimento que recebe "event" como parametro.
-  const index = event.target.getAttribute("data-i"); // aqui guardamos dentro da constante "index" o nosso objeto "event" acompanhado do .target, que, juntos, indica onde foi que ocorreu nosso evento. É uma MARCAÇÃO, uma TARGET. Com isso, sinalizamos de onde ele deve pegar a informação, que é o atributo lá do nosso HTML - o data-i.
-  event.target.innerHTML = player; // então sempre que tivermos o nosso evento acontecendo e marcado (event.target), através do click, nos retornará pelo valor do nosso "player", que é nossa variável que foi criada.
-  event.target.removeEventListener("click", newMove); // a partir de todos os eventos supracitados, agora removemos o evento de click para esse local em específico, para que não seja possível ficar ocorrendo trocas. Isso aqui "trava" o botão na resposta que já foi dada com nosso click.
+  /** criamos uma função para novo movimento que recebe "event" como parametro. */
+  const index =
+    event.target.getAttribute(
+      "data-i"
+    ); /** aqui guardamos dentro da constante "index" o nosso objeto "event" acompanhado do .target, que, juntos, indica onde foi que ocorreu nosso evento. É uma MARCAÇÃO, uma TARGET. Com isso, sinalizamos de onde ele deve pegar a informação, que é o atributo lá do nosso HTML - o data-i. */
+  event.target.innerHTML =
+    player; /** então sempre que tivermos o nosso evento acontecendo e marcado (event.target), através do click, nos retornará pelo valor do nosso "player", que é nossa variável que foi criada. */
+  event.target.removeEventListener(
+    "click",
+    newMove
+  ); /** a partir de todos os eventos supracitados, agora removemos o evento de click para esse local em específico, para que não seja possível ficar ocorrendo trocas. Isso aqui "trava" o botão na resposta que já foi dada com nosso click. */
+  selected[index] =
+    player; /** Aqui vai armazenar na posição clicada o player X. */
+
+  /** Define um tempo de espera */
+  setTimeout(() => {
+    check();
+  }, [100]);
+
+  /** O ? : é uma maneira simples de fazer uma pergunta e escolher entre duas respostas.
+  A pergunta é: "O jogador atual é X?"
+  Se a resposta for sim, então o jogador vira "O".
+  Se a resposta for não, então o jogador vira "X". */
+  player = player === "X" ? "O" : "X";
+  currentPlayer.innerHTML = `JOGADOR DA VEZ: ${player}`;
+}
+
+/** Aqui vamos verificar quem foi o último jogador. Essa informação é guardada na variável playerLastMove */
+function check() {
+  let playerLastMove = player === "X" ? "O" : "X";
 }
