@@ -1,0 +1,33 @@
+@import "./reset";
+@import "./mixins";
+
+body {
+  @include body;
+}
+
+main {
+  @include main;
+}
+
+h1 {
+  text-align: center;
+}
+
+hr {
+  font-weight: bold;
+  height: 3px;
+  background: black;
+  margin-bottom: 10px;
+}
+
+.game {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+
+  button {
+    @include gameButton;
+  }
+  :hover {
+    background: #b6bfc4;
+  }
+}
