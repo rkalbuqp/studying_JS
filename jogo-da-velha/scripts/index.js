@@ -64,4 +64,72 @@ function newMove(event) {
 /** Aqui vamos verificar quem foi o último jogador. Essa informação é guardada na variável playerLastMove */
 function check() {
   let playerLastMove = player === "X" ? "O" : "X";
+
+  /** Aqui, criamos uma função chamada items que vai armazenar as posições onde o último jogador jogou */
+  const items = selected
+    .map((item, indice) => {
+      /** Para cada item de "selected", pegamos o valor do item (que é o jogador "X" ou "O")
+      e também a posição (índice) onde está o item no array. */
+      return [
+        item,
+        indice,
+      ]; /** Cada item do array vira um par: [valor, posição]*/
+    })
+    .filter((item) => {
+      /** Agora, vamos pegar só os itens onde o valor é igual ao do jogador que jogou por último (playerLastMove). */
+      return (
+        item[0] === playerLastMove
+      ); /** Se o valor for igual ao último jogador, mantemos o item */
+    })
+    .map((item) => {
+      /** Depois, pegamos apenas a posição (índice) de onde esse jogador jogou. */
+      return item[1]; /** item[1] é o índice (posição no tabuleiro) onde ele jogou */
+    });
+
+  /**
+   * Aqui estamos fazendo um laço for para percorrer todas as posições possíveis de vitória
+   * que estão guardadas em 'positions'.
+   */
+  for (pos of possiblePositionsToWin) {
+    /**
+     * O método every vai verificar se todos os itens de 'pos' (uma das combinações para vencer)
+     * estão incluídos no array 'items', que contém as posições jogadas pelo último jogador.
+     */
+    if (pos.every((item) => items.includes(item))) {
+      /**
+       * Se todos os itens de 'pos' forem encontrados em 'items', isso significa que o jogador
+       * conseguiu formar uma sequência vencedora, então mostramos um alerta dizendo que o
+       * último jogador ganhou.
+       */
+      alert("O JOGADOR '" + playerLastMove + "' GANHOU!");
+
+      /**
+       * Depois de alguém vencer, reiniciamos o jogo chamando a função 'initial()'.
+       */
+      initial();
+
+      /**
+       * O 'return' aqui serve para parar a função. Não precisa continuar verificando outras
+       * combinações, já que o jogo terminou.
+       */
+      return;
+    }
+  }
+
+  /**
+   * Verificamos se todas as posições do tabuleiro já foram preenchidas.
+   * O filter((item) => item) vai pegar todas as posições do array 'selected' que não estão vazias.
+   * Se o tamanho desse array filtrado for 9, isso significa que todas as posições foram ocupadas.
+   */
+  if (selected.filter((item) => item).length === 9) {
+    /**
+     * Se todas as posições estiverem preenchidas e ninguém venceu, mostramos uma mensagem de empate.
+     */
+    alert("DEU EMPATE!");
+
+    /**
+     * O 'return' aqui encerra a execução da função, porque o jogo acabou com empate.
+     */
+    return;
+  }
 }
